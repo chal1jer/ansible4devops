@@ -1,0 +1,15 @@
+---
+
+- name: test des handlers
+  hosts: all
+  become: yes
+  tasks: 
+
+  - name: installation nginx et utilitaires
+    apt: 
+      name: curl,nginx
+      state: present
+      update_cache: yes
+      cache_valid_time: 3600
+...
+
