@@ -11,6 +11,49 @@
       state: present
       update_cache: yes
       cache_valid_time: 3600
+  
+  - name: suppression du vhost par défaut
+    file: 
+      path:  "{{ item }}"
+      state: absent
+    with_items: 
+    - "/etc/nginx/sites-available/default"
+    - "/etc/nginx/sites-enabled/default"
 
+  - name: installation du vhost
+    template: 
+      src: vhost.conf.j2
+      dest: "/etc/nginx/sites-available/vhost.conf"
+      owner: root
+      group: root
+      mode: 0644 
+    notify: reload nginx
+
+  - name: lancer les handlers 
+    meta: flush_handlers
+
+  - name: création du lien symbolique du vhost
+    file:
+      src: "/etc/nginx/sites-available/vhost.conf"
+      dest: "/etc/nginx/sites-enabled/vhost.conf"
+      state: link
+
+  - name : start nginx
+    systemd: 
+      name: nginx
+      state: started
+
+  - name : création d'un fichier
+    file: 
+      path: /tmp/monFichier.txt
+      state: touch
+
+  handlers: #les handlers sont exécutés à la fin sauf avec un "flush"
+    - name: reload nginx
+      systemd: 
+        name: nginx
+        state: reloaded
 ...
+
+
 
