@@ -1,0 +1,12 @@
+---
+- name: test modules shell and command
+  hosts: all
+  tasks: 
+  - name: test echo
+    shell: |
+      cat /etc/hosts
+      ls /etc/
+    register: __output
+  - name: affichage
+    debug: 
+      var: __output
