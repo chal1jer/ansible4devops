@@ -13,3 +13,11 @@
     - consul
   tags: 
     - consul
+
+- name: "[MYAPP] installation de l'application myapp"
+  hosts: myapp
+  become: yes
+  roles: 
+    - app
+  tags: 
+    - myapp

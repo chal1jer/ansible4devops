@@ -1,0 +1,34 @@
+---
+# tasks file for app
+
+- name: apt update
+  apt: 
+    update-cache: yes
+    cache_valid_time: 3600
+
+-  name: install utils
+   apt: 
+     name: 
+       - python3-flask
+
+- name: create directory nmap
+  file: 
+    path: /myapp
+    state: directory
+    mode: 0755
+
+- name: copy myapp file
+  copy: 
+    src: myapp.py
+    dest: /myapp
+    mode: 0755
+
+- name: create service myapp
+  template: 
+    src: myapp.service.j2
+    dest: /etc/systemd/system/myapp.service
+
+- name: start service myapp
+  service: 
+    name: myapp
+    state: started
