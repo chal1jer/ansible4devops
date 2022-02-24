@@ -51,3 +51,11 @@
     mode: 0755
     owner: consul
     group: consul
+
+- name: if master consul in hosts
+  include: master.yml
+  when: consul_master is defined
+
+- name: if agent
+  include: agent.yml
+  when: consul_master is not defined
