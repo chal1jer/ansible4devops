@@ -1,0 +1,15 @@
+- name: test variables d'environnement et prompt
+  hosts: all
+  vars_prompt: 
+  - name: env
+    prompt: "What is your environment ? prod or dev ?"
+    default: dev
+  environment: 
+    ENV: "{{ env }}"
+  tasks: 
+  - name: echo
+    shell: "echo Hello $ENV"
+    register: __output
+  - name: print
+    debug: 
+      var: __output
